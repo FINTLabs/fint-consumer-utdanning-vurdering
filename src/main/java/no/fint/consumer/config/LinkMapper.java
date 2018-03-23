@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import no.fint.model.utdanning.elev.Medlemskap;
 import no.fint.model.utdanning.kodeverk.Karakterskala;
+import no.fint.model.utdanning.timeplan.Fag;
 import no.fint.model.utdanning.vurdering.Eksamensgruppe;
 import no.fint.model.utdanning.vurdering.Karakterverdi;
 
@@ -18,6 +19,7 @@ public class LinkMapper {
                 .put(Karakterverdi.class.getName(), contextPath + RestEndpoints.KARAKTERVERDI)
                 .put(Karakterskala.class.getName(), "/utdanning/kodeverk/karakterskala")
                 .put(Medlemskap.class.getName(), "/utdanning/elev/medlemskap")
+                .put(Fag.class.getName(), "/utdanning/timeplan/fag")
                 .build();
     }
 
