@@ -1,4 +1,4 @@
-package no.fint.consumer.models.karakterverdi;
+package no.fint.consumer.models.fravar;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -35,25 +35,25 @@ import java.util.Optional;
 
 import javax.naming.NameNotFoundException;
 
-import no.fint.model.resource.utdanning.vurdering.KarakterverdiResource;
-import no.fint.model.resource.utdanning.vurdering.KarakterverdiResources;
+import no.fint.model.resource.utdanning.vurdering.FravarResource;
+import no.fint.model.resource.utdanning.vurdering.FravarResources;
 import no.fint.model.utdanning.vurdering.VurderingActions;
 
 @Slf4j
-@Api(tags = {"Karakterverdi"})
+@Api(tags = {"Fravar"})
 @CrossOrigin
 @RestController
-@RequestMapping(name = "Karakterverdi", value = RestEndpoints.KARAKTERVERDI, produces = {FintRelationsMediaType.APPLICATION_HAL_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-public class KarakterverdiController {
+@RequestMapping(name = "Fravar", value = RestEndpoints.FRAVAR, produces = {FintRelationsMediaType.APPLICATION_HAL_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+public class FravarController {
 
     @Autowired
-    private KarakterverdiCacheService cacheService;
+    private FravarCacheService cacheService;
 
     @Autowired
     private FintAuditService fintAuditService;
 
     @Autowired
-    private KarakterverdiLinker linker;
+    private FravarLinker linker;
 
     @Autowired
     private ConsumerProps props;
@@ -93,7 +93,7 @@ public class KarakterverdiController {
     }
 
     @GetMapping
-    public KarakterverdiResources getKarakterverdi(
+    public FravarResources getFravar(
             @RequestHeader(name = HeaderConstants.ORG_ID, required = false) String orgId,
             @RequestHeader(name = HeaderConstants.CLIENT, required = false) String client,
             @RequestParam(required = false) Long sinceTimeStamp) {
@@ -105,26 +105,26 @@ public class KarakterverdiController {
         }
         log.debug("OrgId: {}, Client: {}", orgId, client);
 
-        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_KARAKTERVERDI, client);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVAR, client);
         fintAuditService.audit(event);
 
         fintAuditService.audit(event, Status.CACHE);
 
-        List<KarakterverdiResource> karakterverdi;
+        List<FravarResource> fravar;
         if (sinceTimeStamp == null) {
-            karakterverdi = cacheService.getAll(orgId);
+            fravar = cacheService.getAll(orgId);
         } else {
-            karakterverdi = cacheService.getAll(orgId, sinceTimeStamp);
+            fravar = cacheService.getAll(orgId, sinceTimeStamp);
         }
 
         fintAuditService.audit(event, Status.CACHE_RESPONSE, Status.SENT_TO_CLIENT);
 
-        return linker.toResources(karakterverdi);
+        return linker.toResources(fravar);
     }
 
 
     @GetMapping("/systemid/{id:.+}")
-    public KarakterverdiResource getKarakterverdiBySystemId(
+    public FravarResource getFravarBySystemId(
             @PathVariable String id,
             @RequestHeader(name = HeaderConstants.ORG_ID, required = false) String orgId,
             @RequestHeader(name = HeaderConstants.CLIENT, required = false) String client) {
@@ -136,17 +136,17 @@ public class KarakterverdiController {
         }
         log.debug("SystemId: {}, OrgId: {}, Client: {}", id, orgId, client);
 
-        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_KARAKTERVERDI, client);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_FRAVAR, client);
         event.setQuery("systemid/" + id);
         fintAuditService.audit(event);
 
         fintAuditService.audit(event, Status.CACHE);
 
-        Optional<KarakterverdiResource> karakterverdi = cacheService.getKarakterverdiBySystemId(orgId, id);
+        Optional<FravarResource> fravar = cacheService.getFravarBySystemId(orgId, id);
 
         fintAuditService.audit(event, Status.CACHE_RESPONSE, Status.SENT_TO_CLIENT);
 
-        return karakterverdi.map(linker::toResource).orElseThrow(() -> new EntityNotFoundException(id));
+        return fravar.map(linker::toResource).orElseThrow(() -> new EntityNotFoundException(id));
     }
 
 
