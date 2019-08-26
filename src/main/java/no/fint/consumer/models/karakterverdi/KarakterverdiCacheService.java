@@ -75,7 +75,8 @@ public class KarakterverdiCacheService extends CacheService<KarakterverdiResourc
 		populateCache(orgId);
 	}
 
-    private void populateCache(String orgId) {
+    @Override
+    public void populateCache(String orgId) {
 		log.info("Populating Karakterverdi cache for {}", orgId);
         Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_KARAKTERVERDI, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);

@@ -75,7 +75,8 @@ public class EksamensgruppeCacheService extends CacheService<EksamensgruppeResou
 		populateCache(orgId);
 	}
 
-    private void populateCache(String orgId) {
+    @Override
+    public void populateCache(String orgId) {
 		log.info("Populating Eksamensgruppe cache for {}", orgId);
         Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_EKSAMENSGRUPPE, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);

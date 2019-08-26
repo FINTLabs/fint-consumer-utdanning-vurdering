@@ -75,7 +75,8 @@ public class VurderingCacheService extends CacheService<VurderingResource> {
 		populateCache(orgId);
 	}
 
-    private void populateCache(String orgId) {
+    @Override
+    public void populateCache(String orgId) {
 		log.info("Populating Vurdering cache for {}", orgId);
         Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_VURDERING, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);
