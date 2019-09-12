@@ -54,7 +54,8 @@ spec:
             - {name: fint.hazelcast.kubernetes.labelValue, value: utdanning-vurdering}
             - {name: fint.relations.default-base-url, value: 'https://beta.felleskomponent.no'}
             - {name: server.context-path, value: /utdanning/vurdering}
-          image: fintlabs.azurecr.io/consumer-utdanning-vurdering:1.1.0
+            - {name: spring.mvc.logResolvedException,  value: 'false'}
+          image: fintlabs.azurecr.io/consumer-utdanning-vurdering:PR-2.2
           name: consumer-utdanning-vurdering
           ports:
             - {containerPort: 8080}
