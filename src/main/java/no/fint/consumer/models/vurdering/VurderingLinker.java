@@ -7,6 +7,7 @@ import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.stream.IntStream;
 
 import static java.util.Objects.isNull;
 import static org.springframework.util.StringUtils.isEmpty;
@@ -39,6 +40,15 @@ public class VurderingLinker extends FintLinker<VurderingResource> {
         
         return null;
     }
-    
+
+    int[] hashCodes(VurderingResource vurdering) {
+        IntStream.Builder builder = IntStream.builder();
+        if (!isNull(vurdering.getSystemId()) && !isEmpty(vurdering.getSystemId().getIdentifikatorverdi())) {
+            builder.add(vurdering.getSystemId().getIdentifikatorverdi().hashCode());
+        }
+        
+        return builder.build().toArray();
+    }
+
 }
 
