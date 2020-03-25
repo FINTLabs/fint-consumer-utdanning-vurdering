@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 import static org.springframework.util.StringUtils.isEmpty;
-
 
 @Component
 public class KarakterverdiLinker extends FintLinker<KarakterverdiResource> {
@@ -34,11 +34,17 @@ public class KarakterverdiLinker extends FintLinker<KarakterverdiResource> {
 
     @Override
     public String getSelfHref(KarakterverdiResource karakterverdi) {
+        return getAllSelfHrefs(karakterverdi).findFirst().orElse(null);
+    }
+
+    @Override
+    public Stream<String> getAllSelfHrefs(KarakterverdiResource karakterverdi) {
+        Stream.Builder<String> builder = Stream.builder();
         if (!isNull(karakterverdi.getSystemId()) && !isEmpty(karakterverdi.getSystemId().getIdentifikatorverdi())) {
-            return createHrefWithId(karakterverdi.getSystemId().getIdentifikatorverdi(), "systemid");
+            builder.add(createHrefWithId(karakterverdi.getSystemId().getIdentifikatorverdi(), "systemid"));
         }
         
-        return null;
+        return builder.build();
     }
 
     int[] hashCodes(KarakterverdiResource karakterverdi) {
