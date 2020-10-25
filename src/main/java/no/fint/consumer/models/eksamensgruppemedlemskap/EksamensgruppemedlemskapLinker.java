@@ -1,6 +1,5 @@
 package no.fint.consumer.models.eksamensgruppemedlemskap;
 
-import no.fint.model.resource.Link;
 import no.fint.model.resource.utdanning.vurdering.EksamensgruppemedlemskapResource;
 import no.fint.model.resource.utdanning.vurdering.EksamensgruppemedlemskapResources;
 import no.fint.relations.FintLinker;
@@ -26,9 +25,14 @@ public class EksamensgruppemedlemskapLinker extends FintLinker<Eksamensgruppemed
 
     @Override
     public EksamensgruppemedlemskapResources toResources(Collection<EksamensgruppemedlemskapResource> collection) {
+        return toResources(collection.stream(), 0, 0, collection.size());
+    }
+
+    @Override
+    public EksamensgruppemedlemskapResources toResources(Stream<EksamensgruppemedlemskapResource> stream, int offset, int size, int totalItems) {
         EksamensgruppemedlemskapResources resources = new EksamensgruppemedlemskapResources();
-        collection.stream().map(this::toResource).forEach(resources::addResource);
-        resources.addSelf(Link.with(self()));
+        stream.map(this::toResource).forEach(resources::addResource);
+        addPagination(resources, offset, size, totalItems);
         return resources;
     }
 
