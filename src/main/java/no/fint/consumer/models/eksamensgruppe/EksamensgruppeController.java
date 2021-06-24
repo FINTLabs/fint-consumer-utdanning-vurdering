@@ -188,6 +188,62 @@ public class EksamensgruppeController {
 
 
 
+    // Writable class
+    @GetMapping("/status/{id}")
+    public ResponseEntity getStatus(
+            @PathVariable String id,
+            @RequestHeader(HeaderConstants.ORG_ID) String orgId,
+            @RequestHeader(HeaderConstants.CLIENT) String client) {
+        log.debug("/status/{} for {} from {}", id, orgId, client);
+        return statusCache.handleStatusRequest(id, orgId, linker, EksamensgruppeResource.class);
+    }
+
+    @PostMapping
+    public ResponseEntity postEksamensgruppe(
+            @RequestHeader(name = HeaderConstants.ORG_ID) String orgId,
+            @RequestHeader(name = HeaderConstants.CLIENT) String client,
+            @RequestBody EksamensgruppeResource body,
+            @RequestParam(name = "validate", required = false) boolean validate
+    ) {
+        log.debug("postEksamensgruppe, Validate: {}, OrgId: {}, Client: {}", validate, orgId, client);
+        log.trace("Body: {}", body);
+        linker.mapLinks(body);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.UPDATE_EKSAMENSGRUPPE, client);
+        event.addObject(objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS).convertValue(body, Map.class));
+        event.setOperation(validate ? Operation.VALIDATE : Operation.CREATE);
+        consumerEventUtil.send(event);
+
+        statusCache.put(event.getCorrId(), event);
+
+        URI location = UriComponentsBuilder.fromUriString(linker.self()).path("status/{id}").buildAndExpand(event.getCorrId()).toUri();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).location(location).build();
+    }
+
+  
+    @PutMapping("/systemid/{id:.+}")
+    public ResponseEntity putEksamensgruppeBySystemId(
+            @PathVariable String id,
+            @RequestHeader(name = HeaderConstants.ORG_ID) String orgId,
+            @RequestHeader(name = HeaderConstants.CLIENT) String client,
+            @RequestBody EksamensgruppeResource body
+    ) {
+        log.debug("putEksamensgruppeBySystemId {}, OrgId: {}, Client: {}", id, orgId, client);
+        log.trace("Body: {}", body);
+        linker.mapLinks(body);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.UPDATE_EKSAMENSGRUPPE, client);
+        event.setQuery("systemid/" + id);
+        event.addObject(objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS).convertValue(body, Map.class));
+        event.setOperation(Operation.UPDATE);
+        fintAuditService.audit(event);
+
+        consumerEventUtil.send(event);
+
+        statusCache.put(event.getCorrId(), event);
+
+        URI location = UriComponentsBuilder.fromUriString(linker.self()).path("status/{id}").buildAndExpand(event.getCorrId()).toUri();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).location(location).build();
+    }
+  
 
     //
     // Exception handlers
