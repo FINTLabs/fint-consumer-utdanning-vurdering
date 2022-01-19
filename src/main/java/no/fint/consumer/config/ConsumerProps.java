@@ -25,6 +25,12 @@ public class ConsumerProps {
     @Value("${fint.consumer.status.created:false}")
     private boolean useCreated;
 
+    @Value("${fint.consumer.cache.event.wait.fravar:600000}")
+    private long eventWaitFravar;
+
+    @Value("${fint.consumer.cache.event.wait.fravarsoversikt:600000}")
+    private long eventWaitFravarsOversikt;
+
     private Set<String> assets;
 
     @Autowired

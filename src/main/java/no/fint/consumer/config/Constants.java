@@ -17,12 +17,14 @@ public enum Constants {
     public static final String CACHE_INITIALDELAY_EKSAMENSGRUPPEMEDLEMSKAP = "${fint.consumer.cache.initialDelay.eksamensgruppemedlemskap:1100000}";
     public static final String CACHE_FIXEDRATE_EKSAMENSGRUPPEMEDLEMSKAP = "${fint.consumer.cache.fixedRate.eksamensgruppemedlemskap:900000}";
     
-    public static final String CACHE_INITIALDELAY_FRAVAR = "${fint.consumer.cache.initialDelay.fravar:1200000}";
-    public static final String CACHE_FIXEDRATE_FRAVAR = "${fint.consumer.cache.fixedRate.fravar:900000}";
-    
-    public static final String CACHE_INITIALDELAY_FRAVARSOVERSIKT = "${fint.consumer.cache.initialDelay.fravarsoversikt:1300000}";
-    public static final String CACHE_FIXEDRATE_FRAVARSOVERSIKT = "${fint.consumer.cache.fixedRate.fravarsoversikt:900000}";
-    
+    // public static final String CACHE_INITIALDELAY_FRAVAR = "${fint.consumer.cache.initialDelay.fravar:1200000}";
+    // public static final String CACHE_FIXEDRATE_FRAVAR = "${fint.consumer.cache.fixedRate.fravar:900000}";
+    public static final String CACHE_CRON_FRAVAR = "${fint.consumer.cache.cron.fravar:0 0 */2 * * *}";
+
+    // public static final String CACHE_INITIALDELAY_FRAVARSOVERSIKT = "${fint.consumer.cache.initialDelay.fravarsoversikt:1300000}";
+    // public static final String CACHE_FIXEDRATE_FRAVARSOVERSIKT = "${fint.consumer.cache.fixedRate.fravarsoversikt:900000}";
+    public static final String CACHE_CRON_FRAVARSOVERSIKT = "${fint.consumer.cache.cron.fravarsoversikt:0 0/10 */2 * * *}";
+
     public static final String CACHE_INITIALDELAY_HALVARSFAGVURDERING = "${fint.consumer.cache.initialDelay.halvarsfagvurdering:1400000}";
     public static final String CACHE_FIXEDRATE_HALVARSFAGVURDERING = "${fint.consumer.cache.fixedRate.halvarsfagvurdering:900000}";
     
