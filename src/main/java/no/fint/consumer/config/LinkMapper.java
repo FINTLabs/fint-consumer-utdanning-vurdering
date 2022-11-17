@@ -52,6 +52,7 @@ public class LinkMapper {
             .put("no.fint.model.utdanning.elev.Skoleressurs", "/utdanning/elev/skoleressurs")
             .put("no.fint.model.utdanning.timeplan.Undervisningsgruppe", "/utdanning/timeplan/undervisningsgruppe")
             .put("no.fint.model.utdanning.kodeverk.Fravarstype", "/utdanning/kodeverk/fravarstype")
+            .put("no.fint.model.utdanning.timeplan.Faggruppe", "/utdanning/timeplan/faggruppe")
             .put("no.fint.model.utdanning.kodeverk.Karakterskala", "/utdanning/kodeverk/karakterskala")
             /* .put(TODO,TODO) */
             .build();
