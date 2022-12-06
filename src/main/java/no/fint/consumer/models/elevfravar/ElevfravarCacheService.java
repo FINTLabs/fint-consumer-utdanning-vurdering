@@ -22,8 +22,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import no.fint.model.utdanning.vurdering.Elevfravar;
@@ -69,9 +71,22 @@ public class ElevfravarCacheService extends CacheService<ElevfravarResource> {
         props.getAssets().forEach(this::createCache);
     }
 
-    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_ELEVFRAVAR, fixedRateString = Constants.CACHE_FIXEDRATE_ELEVFRAVAR)
+    @Scheduled(cron = Constants.CACHE_CRON_ELEVFRAVAR)
     public void populateCacheAll() {
-        props.getAssets().forEach(this::populateCache);
+        Executors.newSingleThreadExecutor()
+                .execute(() -> props.getAssets().forEach(asset -> {
+                    populateCache(asset);
+                    try {
+                        Duration duration = Duration.ofMillis(props.getEventWaitElevfravar());
+                        log.info("Waiting for {} minutes and {} seconds before populating cache for next asset. If this is the last asset nothing more will happen until a new schedule 🏁",
+                                duration.toMinutes(),
+                                duration.minusMinutes(duration.toMinutes()).getSeconds()
+                        );
+                        Thread.sleep(props.getEventWaitElevfravar());
+                    } catch (InterruptedException e) {
+                        log.warn(e.getMessage());
+                    }
+                }));
     }
 
     public void rebuildCache(String orgId) {

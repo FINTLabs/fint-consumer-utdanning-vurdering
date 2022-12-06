@@ -17,8 +17,9 @@ public enum Constants {
     public static final String CACHE_INITIALDELAY_EKSAMENSGRUPPEMEDLEMSKAP = "${fint.consumer.cache.initialDelay.eksamensgruppemedlemskap:1100000}";
     public static final String CACHE_FIXEDRATE_EKSAMENSGRUPPEMEDLEMSKAP = "${fint.consumer.cache.fixedRate.eksamensgruppemedlemskap:900000}";
     
-    public static final String CACHE_INITIALDELAY_ELEVFRAVAR = "${fint.consumer.cache.initialDelay.elevfravar:1200000}";
-    public static final String CACHE_FIXEDRATE_ELEVFRAVAR = "${fint.consumer.cache.fixedRate.elevfravar:900000}";
+    //public static final String CACHE_INITIALDELAY_ELEVFRAVAR = "${fint.consumer.cache.initialDelay.elevfravar:1200000}";
+    //public static final String CACHE_FIXEDRATE_ELEVFRAVAR = "${fint.consumer.cache.fixedRate.elevfravar:900000}";
+    public static final String CACHE_CRON_ELEVFRAVAR = "${fint.consumer.cache.cron.elevfravar:0 20 */2 * * *}";
 
     // public static final String CACHE_INITIALDELAY_FRAVAR = "${fint.consumer.cache.initialDelay.fravar:1300000}";
     // public static final String CACHE_FIXEDRATE_FRAVAR = "${fint.consumer.cache.fixedRate.fravar:900000}";
