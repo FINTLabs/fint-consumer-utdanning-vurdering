@@ -44,5 +44,6 @@ public class ConsumerProps {
     public String[] getOrgs() {
         return assets.toArray(new String[0]);
     }
+
 }
 

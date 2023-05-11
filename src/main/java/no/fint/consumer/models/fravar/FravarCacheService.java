@@ -67,10 +67,8 @@ public class FravarCacheService extends CacheService<FravarResource> {
         props.getAssets().forEach(this::createCache);
     }
 
-    //@Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_FRAVAR, fixedRateString = Constants.CACHE_FIXEDRATE_FRAVAR)
     @Scheduled(cron = Constants.CACHE_CRON_FRAVAR)
     public void populateCacheAll() {
-
         Executors.newSingleThreadExecutor()
                 .execute(() -> props.getAssets().forEach(asset -> {
                     populateCache(asset);
