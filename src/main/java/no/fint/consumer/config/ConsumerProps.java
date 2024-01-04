@@ -34,6 +34,9 @@ public class ConsumerProps {
     @Value("${fint.consumer.cache.event.wait.fravarsoversikt:600000}")
     private long eventWaitFravarsOversikt;
 
+    @Value("${fint.consumer.cache.event.wait.fravarsregistrering:600000}")
+    private long eventWaitFravarsregistrering;
+
     private Set<String> assets;
 
     @Autowired
