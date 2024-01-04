@@ -10,6 +10,7 @@ public enum RestEndpoints {
 	public static final String ELEVFRAVAR = "/elevfravar";
 	public static final String FRAVAR = "/fravar";
 	public static final String FRAVARSOVERSIKT = "/fravarsoversikt";
+	public static final String FRAVARSREGISTRERING = "/fravarsregistrering";
 	public static final String HALVARSFAGVURDERING = "/halvarsfagvurdering";
 	public static final String HALVARSORDENSVURDERING = "/halvarsordensvurdering";
 	public static final String KARAKTERHISTORIE = "/karakterhistorie";

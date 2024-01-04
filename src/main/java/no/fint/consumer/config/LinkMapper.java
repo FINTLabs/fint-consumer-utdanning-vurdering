@@ -9,6 +9,7 @@ import no.fint.model.utdanning.vurdering.Eksamensgruppemedlemskap;
 import no.fint.model.utdanning.vurdering.Elevfravar;
 import no.fint.model.utdanning.vurdering.Fravar;
 import no.fint.model.utdanning.vurdering.Fravarsoversikt;
+import no.fint.model.utdanning.vurdering.Fravarsregistrering;
 import no.fint.model.utdanning.vurdering.Halvarsfagvurdering;
 import no.fint.model.utdanning.vurdering.Halvarsordensvurdering;
 import no.fint.model.utdanning.vurdering.Karakterhistorie;
@@ -30,6 +31,7 @@ public class LinkMapper {
             .put(Elevfravar.class.getName(), contextPath + RestEndpoints.ELEVFRAVAR)
             .put(Fravar.class.getName(), contextPath + RestEndpoints.FRAVAR)
             .put(Fravarsoversikt.class.getName(), contextPath + RestEndpoints.FRAVARSOVERSIKT)
+            .put(Fravarsregistrering.class.getName(), contextPath + RestEndpoints.FRAVARSREGISTRERING)
             .put(Halvarsfagvurdering.class.getName(), contextPath + RestEndpoints.HALVARSFAGVURDERING)
             .put(Halvarsordensvurdering.class.getName(), contextPath + RestEndpoints.HALVARSORDENSVURDERING)
             .put(Karakterhistorie.class.getName(), contextPath + RestEndpoints.KARAKTERHISTORIE)
@@ -42,12 +44,14 @@ public class LinkMapper {
             .put(Vurdering.class.getName(), contextPath + RestEndpoints.VURDERING)
             .put("no.fint.model.utdanning.kodeverk.Skolear", "/utdanning/kodeverk/skolear")
             .put("no.fint.model.utdanning.elev.Elevforhold", "/utdanning/elev/elevforhold")
+            .put("no.fint.model.utdanning.timeplan.Eksamen", "/utdanning/timeplan/eksamen")
             .put("no.fint.model.utdanning.timeplan.Fag", "/utdanning/timeplan/fag")
             .put("no.fint.model.utdanning.utdanningsprogram.Skole", "/utdanning/utdanningsprogram/skole")
             .put("no.fint.model.utdanning.kodeverk.Termin", "/utdanning/kodeverk/termin")
             .put("no.fint.model.utdanning.kodeverk.Eksamensform", "/utdanning/kodeverk/eksamensform")
             .put("no.fint.model.utdanning.elev.Undervisningsforhold", "/utdanning/elev/undervisningsforhold")
             .put("no.fint.model.utdanning.elev.Medlemskap", "/utdanning/elev/medlemskap")
+            .put("no.fint.model.felles.kodeverk.Fylke", "/felles/kodeverk/fylke")
             .put("no.fint.model.utdanning.kodeverk.Karakterstatus", "/utdanning/kodeverk/karakterstatus")
             .put("no.fint.model.utdanning.elev.Skoleressurs", "/utdanning/elev/skoleressurs")
             .put("no.fint.model.utdanning.timeplan.Undervisningsgruppe", "/utdanning/timeplan/undervisningsgruppe")
