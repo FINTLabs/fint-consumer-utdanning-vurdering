@@ -107,7 +107,10 @@ public class KarakterhistorieCacheService extends CacheService<KarakterhistorieR
         } else {
             data = objectMapper.convertValue(event.getData(), javaType);
         }
-        data.forEach(linker::mapLinks);
+        data.forEach(resource -> {
+            linker.mapLinks(resource);
+            linker.resetSelfLinks(resource);
+        });
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_KARAKTERHISTORIE) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<KarakterhistorieResource>> cacheObjects = data
