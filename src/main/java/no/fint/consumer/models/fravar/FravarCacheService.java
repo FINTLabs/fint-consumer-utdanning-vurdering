@@ -96,9 +96,10 @@ public class FravarCacheService extends CacheService<FravarResource> {
 
     @Override
     public void populateCache(String orgId) {
-		log.info("Populating Fravar cache for {}", orgId);
-        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVAR, Constants.CACHE_SERVICE);
-        consumerEventUtil.send(event);
+        log.info("Populating Fravar has been disabled due to large volumn of data and that it is obsolete ({})", orgId);
+        //	log.info("Populating Fravar cache for {}", orgId);
+        //  Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVAR, Constants.CACHE_SERVICE);
+        //  consumerEventUtil.send(event);
     }
 
 
