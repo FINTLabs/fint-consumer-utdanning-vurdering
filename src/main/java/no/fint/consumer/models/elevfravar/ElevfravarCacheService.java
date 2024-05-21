@@ -3,9 +3,7 @@ package no.fint.consumer.models.elevfravar;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import lombok.extern.slf4j.Slf4j;
-
 import no.fint.cache.CacheService;
 import no.fint.cache.model.CacheObject;
 import no.fint.consumer.config.Constants;
@@ -13,8 +11,11 @@ import no.fint.consumer.config.ConsumerProps;
 import no.fint.consumer.event.ConsumerEventUtil;
 import no.fint.event.model.Event;
 import no.fint.event.model.ResponseStatus;
+import no.fint.model.felles.kompleksedatatyper.Identifikator;
+import no.fint.model.resource.utdanning.vurdering.ElevfravarResource;
+import no.fint.model.utdanning.vurdering.Elevfravar;
+import no.fint.model.utdanning.vurdering.VurderingActions;
 import no.fint.relations.FintResourceCompatibility;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,11 +28,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-
-import no.fint.model.utdanning.vurdering.Elevfravar;
-import no.fint.model.resource.utdanning.vurdering.ElevfravarResource;
-import no.fint.model.utdanning.vurdering.VurderingActions;
-import no.fint.model.felles.kompleksedatatyper.Identifikator;
 
 @Slf4j
 @Service
@@ -90,13 +86,13 @@ public class ElevfravarCacheService extends CacheService<ElevfravarResource> {
     }
 
     public void rebuildCache(String orgId) {
-		flush(orgId);
-		populateCache(orgId);
-	}
+        flush(orgId);
+        populateCache(orgId);
+    }
 
     @Override
     public void populateCache(String orgId) {
-		log.info("Populating Elevfravar cache for {}", orgId);
+        log.info("Populating Elevfravar cache for {}", orgId);
         Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_ELEVFRAVAR, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);
     }
@@ -104,16 +100,16 @@ public class ElevfravarCacheService extends CacheService<ElevfravarResource> {
 
     public Optional<ElevfravarResource> getElevfravarBySystemId(String orgId, String systemId) {
         return getOne(orgId, systemId.hashCode(),
-            (resource) -> Optional
-                .ofNullable(resource)
-                .map(ElevfravarResource::getSystemId)
-                .map(Identifikator::getIdentifikatorverdi)
-                .map(systemId::equals)
-                .orElse(false));
+                (resource) -> Optional
+                        .ofNullable(resource)
+                        .map(ElevfravarResource::getSystemId)
+                        .map(Identifikator::getIdentifikatorverdi)
+                        .map(systemId::equals)
+                        .orElse(false));
     }
 
 
-	@Override
+    @Override
     public void onAction(Event event) {
         List<ElevfravarResource> data;
         if (checkFintResourceCompatibility && fintResourceCompatibility.isFintResourceData(event.getData())) {
@@ -129,9 +125,9 @@ public class ElevfravarCacheService extends CacheService<ElevfravarResource> {
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_ELEVFRAVAR) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<ElevfravarResource>> cacheObjects = data
-                    .stream()
-                    .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
-                    .collect(Collectors.toList());
+                        .stream()
+                        .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
+                        .collect(Collectors.toList());
                 addCache(event.getOrgId(), cacheObjects);
                 log.info("Added {} cache objects to cache for {}", cacheObjects.size(), event.getOrgId());
             } else {
