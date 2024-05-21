@@ -1,4 +1,4 @@
-package no.fint.consumer.models.underveisordensvurdering;
+package no.fint.consumer.models.elevvurdering;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,17 +26,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import no.fint.model.utdanning.vurdering.Underveisordensvurdering;
-import no.fint.model.resource.utdanning.vurdering.UnderveisordensvurderingResource;
+import no.fint.model.utdanning.vurdering.Elevvurdering;
+import no.fint.model.resource.utdanning.vurdering.ElevvurderingResource;
 import no.fint.model.utdanning.vurdering.VurderingActions;
 import no.fint.model.felles.kompleksedatatyper.Identifikator;
 
 @Slf4j
 @Service
-@ConditionalOnProperty(name = "fint.consumer.cache.disabled.underveisordensvurdering", havingValue = "false", matchIfMissing = true)
-public class UnderveisordensvurderingCacheService extends CacheService<UnderveisordensvurderingResource> {
+@ConditionalOnProperty(name = "fint.consumer.cache.disabled.elevvurdering", havingValue = "false", matchIfMissing = true)
+public class ElevvurderingCacheService extends CacheService<ElevvurderingResource> {
 
-    public static final String MODEL = Underveisordensvurdering.class.getSimpleName().toLowerCase();
+    public static final String MODEL = Elevvurdering.class.getSimpleName().toLowerCase();
 
     @Value("${fint.consumer.compatibility.fintresource:true}")
     private boolean checkFintResourceCompatibility;
@@ -51,16 +51,16 @@ public class UnderveisordensvurderingCacheService extends CacheService<Underveis
     private ConsumerProps props;
 
     @Autowired
-    private UnderveisordensvurderingLinker linker;
+    private ElevvurderingLinker linker;
 
     private JavaType javaType;
 
     private ObjectMapper objectMapper;
 
-    public UnderveisordensvurderingCacheService() {
-        super(MODEL, VurderingActions.GET_ALL_UNDERVEISORDENSVURDERING, VurderingActions.UPDATE_UNDERVEISORDENSVURDERING);
+    public ElevvurderingCacheService() {
+        super(MODEL, VurderingActions.GET_ALL_ELEVVURDERING, VurderingActions.UPDATE_ELEVVURDERING);
         objectMapper = new ObjectMapper();
-        javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, UnderveisordensvurderingResource.class);
+        javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, ElevvurderingResource.class);
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
 
@@ -69,7 +69,7 @@ public class UnderveisordensvurderingCacheService extends CacheService<Underveis
         props.getAssets().forEach(this::createCache);
     }
 
-    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_UNDERVEISORDENSVURDERING, fixedRateString = Constants.CACHE_FIXEDRATE_UNDERVEISORDENSVURDERING)
+    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_ELEVVURDERING, fixedRateString = Constants.CACHE_FIXEDRATE_ELEVVURDERING)
     public void populateCacheAll() {
         props.getAssets().forEach(this::populateCache);
     }
@@ -81,17 +81,17 @@ public class UnderveisordensvurderingCacheService extends CacheService<Underveis
 
     @Override
     public void populateCache(String orgId) {
-		log.info("Populating Underveisordensvurdering cache for {}", orgId);
-        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_UNDERVEISORDENSVURDERING, Constants.CACHE_SERVICE);
+		log.info("Populating Elevvurdering cache for {}", orgId);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_ELEVVURDERING, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);
     }
 
 
-    public Optional<UnderveisordensvurderingResource> getUnderveisordensvurderingBySystemId(String orgId, String systemId) {
+    public Optional<ElevvurderingResource> getElevvurderingBySystemId(String orgId, String systemId) {
         return getOne(orgId, systemId.hashCode(),
             (resource) -> Optional
                 .ofNullable(resource)
-                .map(UnderveisordensvurderingResource::getSystemId)
+                .map(ElevvurderingResource::getSystemId)
                 .map(Identifikator::getIdentifikatorverdi)
                 .map(systemId::equals)
                 .orElse(false));
@@ -100,17 +100,17 @@ public class UnderveisordensvurderingCacheService extends CacheService<Underveis
 
 	@Override
     public void onAction(Event event) {
-        List<UnderveisordensvurderingResource> data;
+        List<ElevvurderingResource> data;
         if (checkFintResourceCompatibility && fintResourceCompatibility.isFintResourceData(event.getData())) {
-            log.info("Compatibility: Converting FintResource<UnderveisordensvurderingResource> to UnderveisordensvurderingResource ...");
-            data = fintResourceCompatibility.convertResourceData(event.getData(), UnderveisordensvurderingResource.class);
+            log.info("Compatibility: Converting FintResource<ElevvurderingResource> to ElevvurderingResource ...");
+            data = fintResourceCompatibility.convertResourceData(event.getData(), ElevvurderingResource.class);
         } else {
             data = objectMapper.convertValue(event.getData(), javaType);
         }
         data.forEach(linker::mapLinks);
-        if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_UNDERVEISORDENSVURDERING) {
+        if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_ELEVVURDERING) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
-                List<CacheObject<UnderveisordensvurderingResource>> cacheObjects = data
+                List<CacheObject<ElevvurderingResource>> cacheObjects = data
                     .stream()
                     .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
                     .collect(Collectors.toList());
@@ -120,7 +120,7 @@ public class UnderveisordensvurderingCacheService extends CacheService<Underveis
                 log.debug("Ignoring payload for {} with response status {}", event.getOrgId(), event.getResponseStatus());
             }
         } else {
-            List<CacheObject<UnderveisordensvurderingResource>> cacheObjects = data
+            List<CacheObject<ElevvurderingResource>> cacheObjects = data
                     .stream()
                     .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
                     .collect(Collectors.toList());

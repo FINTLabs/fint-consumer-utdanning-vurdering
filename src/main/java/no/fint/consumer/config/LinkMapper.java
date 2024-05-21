@@ -7,6 +7,7 @@ import no.fint.model.utdanning.vurdering.Anmerkninger;
 import no.fint.model.utdanning.vurdering.Eksamensgruppe;
 import no.fint.model.utdanning.vurdering.Eksamensgruppemedlemskap;
 import no.fint.model.utdanning.vurdering.Elevfravar;
+import no.fint.model.utdanning.vurdering.Elevvurdering;
 import no.fint.model.utdanning.vurdering.Fravar;
 import no.fint.model.utdanning.vurdering.Fravarsoversikt;
 import no.fint.model.utdanning.vurdering.Fravarsregistrering;
@@ -29,6 +30,7 @@ public class LinkMapper {
             .put(Eksamensgruppe.class.getName(), contextPath + RestEndpoints.EKSAMENSGRUPPE)
             .put(Eksamensgruppemedlemskap.class.getName(), contextPath + RestEndpoints.EKSAMENSGRUPPEMEDLEMSKAP)
             .put(Elevfravar.class.getName(), contextPath + RestEndpoints.ELEVFRAVAR)
+            .put(Elevvurdering.class.getName(), contextPath + RestEndpoints.ELEVVURDERING)
             .put(Fravar.class.getName(), contextPath + RestEndpoints.FRAVAR)
             .put(Fravarsoversikt.class.getName(), contextPath + RestEndpoints.FRAVARSOVERSIKT)
             .put(Fravarsregistrering.class.getName(), contextPath + RestEndpoints.FRAVARSREGISTRERING)
@@ -53,6 +55,8 @@ public class LinkMapper {
             .put("no.fint.model.utdanning.elev.Medlemskap", "/utdanning/elev/medlemskap")
             .put("no.fint.model.felles.kodeverk.Fylke", "/felles/kodeverk/fylke")
             .put("no.fint.model.utdanning.kodeverk.Karakterstatus", "/utdanning/kodeverk/karakterstatus")
+            .put("no.fint.model.utdanning.kodeverk.Betalingsstatus", "/utdanning/kodeverk/betalingsstatus")
+            .put("no.fint.model.utdanning.kodeverk.Vitnemalsmerknad", "/utdanning/kodeverk/vitnemalsmerknad")
             .put("no.fint.model.utdanning.elev.Skoleressurs", "/utdanning/elev/skoleressurs")
             .put("no.fint.model.utdanning.timeplan.Undervisningsgruppe", "/utdanning/timeplan/undervisningsgruppe")
             .put("no.fint.model.utdanning.kodeverk.Fravarstype", "/utdanning/kodeverk/fravarstype")
