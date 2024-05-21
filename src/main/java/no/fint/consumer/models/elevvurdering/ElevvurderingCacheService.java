@@ -107,7 +107,10 @@ public class ElevvurderingCacheService extends CacheService<ElevvurderingResourc
         } else {
             data = objectMapper.convertValue(event.getData(), javaType);
         }
-        data.forEach(linker::mapLinks);
+        data.forEach(resource -> {
+            linker.mapLinks(resource);
+            linker.resetSelfLinks(resource);
+        });
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_ELEVVURDERING) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<ElevvurderingResource>> cacheObjects = data
