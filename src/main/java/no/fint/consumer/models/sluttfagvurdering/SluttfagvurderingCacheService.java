@@ -107,10 +107,7 @@ public class SluttfagvurderingCacheService extends CacheService<Sluttfagvurderin
         } else {
             data = objectMapper.convertValue(event.getData(), javaType);
         }
-        data.forEach(resource -> {
-            linker.mapLinks(resource);
-            linker.resetSelfLinks(resource);
-        });
+        data.forEach(linker::mapLinks);
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_SLUTTFAGVURDERING) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<SluttfagvurderingResource>> cacheObjects = data

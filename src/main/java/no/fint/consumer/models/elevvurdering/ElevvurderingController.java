@@ -182,7 +182,7 @@ public class ElevvurderingController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(elevvurdering);
+            return linker.mapAndResetLinks(elevvurdering);
         }    
     }
 

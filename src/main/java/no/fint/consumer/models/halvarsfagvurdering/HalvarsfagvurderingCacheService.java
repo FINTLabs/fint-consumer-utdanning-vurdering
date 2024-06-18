@@ -107,10 +107,7 @@ public class HalvarsfagvurderingCacheService extends CacheService<Halvarsfagvurd
         } else {
             data = objectMapper.convertValue(event.getData(), javaType);
         }
-        data.forEach(resource -> {
-            linker.mapLinks(resource);
-            linker.resetSelfLinks(resource);
-        });
+        data.forEach(linker::mapLinks);
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_HALVARSFAGVURDERING) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<HalvarsfagvurderingResource>> cacheObjects = data
