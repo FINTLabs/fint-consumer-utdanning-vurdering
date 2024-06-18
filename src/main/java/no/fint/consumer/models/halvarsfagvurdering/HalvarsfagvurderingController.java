@@ -182,7 +182,7 @@ public class HalvarsfagvurderingController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(halvarsfagvurdering);
+            return linker.mapAndResetLinks(halvarsfagvurdering);
         }    
     }
 

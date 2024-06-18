@@ -182,7 +182,7 @@ public class AnmerkningerController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(anmerkninger);
+            return linker.mapAndResetLinks(anmerkninger);
         }    
     }
 

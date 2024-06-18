@@ -182,7 +182,7 @@ public class EksamensgruppemedlemskapController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(eksamensgruppemedlemskap);
+            return linker.mapAndResetLinks(eksamensgruppemedlemskap);
         }    
     }
 

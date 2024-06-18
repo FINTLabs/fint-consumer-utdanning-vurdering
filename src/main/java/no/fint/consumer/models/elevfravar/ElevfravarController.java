@@ -182,7 +182,7 @@ public class ElevfravarController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(elevfravar);
+            return linker.mapAndResetLinks(elevfravar);
         }    
     }
 

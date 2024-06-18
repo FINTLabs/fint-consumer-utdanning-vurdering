@@ -3,9 +3,7 @@ package no.fint.consumer.models.fravarsoversikt;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import lombok.extern.slf4j.Slf4j;
-
 import no.fint.cache.CacheService;
 import no.fint.cache.model.CacheObject;
 import no.fint.consumer.config.Constants;
@@ -13,8 +11,11 @@ import no.fint.consumer.config.ConsumerProps;
 import no.fint.consumer.event.ConsumerEventUtil;
 import no.fint.event.model.Event;
 import no.fint.event.model.ResponseStatus;
+import no.fint.model.felles.kompleksedatatyper.Identifikator;
+import no.fint.model.resource.utdanning.vurdering.FravarsoversiktResource;
+import no.fint.model.utdanning.vurdering.Fravarsoversikt;
+import no.fint.model.utdanning.vurdering.VurderingActions;
 import no.fint.relations.FintResourceCompatibility;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,11 +28,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-
-import no.fint.model.utdanning.vurdering.Fravarsoversikt;
-import no.fint.model.resource.utdanning.vurdering.FravarsoversiktResource;
-import no.fint.model.utdanning.vurdering.VurderingActions;
-import no.fint.model.felles.kompleksedatatyper.Identifikator;
 
 @Slf4j
 @Service
