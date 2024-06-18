@@ -182,7 +182,7 @@ public class HalvarsordensvurderingController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(halvarsordensvurdering);
+            return linker.mapAndResetLinks(halvarsordensvurdering);
         }    
     }
 

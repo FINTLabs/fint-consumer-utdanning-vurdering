@@ -182,7 +182,7 @@ public class VurderingController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(vurdering);
+            return linker.mapAndResetLinks(vurdering);
         }    
     }
 

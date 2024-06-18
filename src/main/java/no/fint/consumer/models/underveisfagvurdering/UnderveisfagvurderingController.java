@@ -182,7 +182,7 @@ public class UnderveisfagvurderingController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(underveisfagvurdering);
+            return linker.mapAndResetLinks(underveisfagvurdering);
         }    
     }
 

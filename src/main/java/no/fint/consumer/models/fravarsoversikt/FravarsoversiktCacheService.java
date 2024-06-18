@@ -22,10 +22,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import no.fint.model.utdanning.vurdering.Fravarsoversikt;
@@ -71,32 +69,19 @@ public class FravarsoversiktCacheService extends CacheService<FravarsoversiktRes
         props.getAssets().forEach(this::createCache);
     }
 
-    @Scheduled(cron = Constants.CACHE_CRON_FRAVARSOVERSIKT)
+    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_FRAVARSOVERSIKT, fixedRateString = Constants.CACHE_FIXEDRATE_FRAVARSOVERSIKT)
     public void populateCacheAll() {
-        Executors.newSingleThreadExecutor()
-                .execute(() -> props.getAssets().forEach(asset -> {
-                    populateCache(asset);
-                    try {
-                        Duration duration = Duration.ofMillis(props.getEventWaitFravar());
-                        log.info("Waiting for {} minutes and {} seconds before populating cache for next asset. If this is the last asset nothing more will happen until a new schedule 🏁",
-                                duration.toMinutes(),
-                                duration.minusMinutes(duration.toMinutes()).getSeconds()
-                        );
-                        Thread.sleep(props.getEventWaitFravar());
-                    } catch (InterruptedException e) {
-                        log.warn(e.getMessage());
-                    }
-                }));
+        props.getAssets().forEach(this::populateCache);
     }
 
     public void rebuildCache(String orgId) {
-        flush(orgId);
-        populateCache(orgId);
-    }
+		flush(orgId);
+		populateCache(orgId);
+	}
 
     @Override
     public void populateCache(String orgId) {
-        log.info("Populating Fravarsoversikt cache for {}", orgId);
+		log.info("Populating Fravarsoversikt cache for {}", orgId);
         Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVARSOVERSIKT, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);
     }
@@ -104,16 +89,16 @@ public class FravarsoversiktCacheService extends CacheService<FravarsoversiktRes
 
     public Optional<FravarsoversiktResource> getFravarsoversiktBySystemId(String orgId, String systemId) {
         return getOne(orgId, systemId.hashCode(),
-                (resource) -> Optional
-                        .ofNullable(resource)
-                        .map(FravarsoversiktResource::getSystemId)
-                        .map(Identifikator::getIdentifikatorverdi)
-                        .map(systemId::equals)
-                        .orElse(false));
+            (resource) -> Optional
+                .ofNullable(resource)
+                .map(FravarsoversiktResource::getSystemId)
+                .map(Identifikator::getIdentifikatorverdi)
+                .map(systemId::equals)
+                .orElse(false));
     }
 
 
-    @Override
+	@Override
     public void onAction(Event event) {
         List<FravarsoversiktResource> data;
         if (checkFintResourceCompatibility && fintResourceCompatibility.isFintResourceData(event.getData())) {
@@ -129,9 +114,9 @@ public class FravarsoversiktCacheService extends CacheService<FravarsoversiktRes
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_FRAVARSOVERSIKT) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<FravarsoversiktResource>> cacheObjects = data
-                        .stream()
-                        .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
-                        .collect(Collectors.toList());
+                    .stream()
+                    .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
+                    .collect(Collectors.toList());
                 addCache(event.getOrgId(), cacheObjects);
                 log.info("Added {} cache objects to cache for {}", cacheObjects.size(), event.getOrgId());
             } else {

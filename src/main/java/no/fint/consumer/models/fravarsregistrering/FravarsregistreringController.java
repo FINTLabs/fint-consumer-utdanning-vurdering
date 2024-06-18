@@ -182,7 +182,7 @@ public class FravarsregistreringController {
 
             fintAuditService.audit(response, Status.SENT_TO_CLIENT);
 
-            return linker.toResource(fravarsregistrering);
+            return linker.mapAndResetLinks(fravarsregistrering);
         }    
     }
 

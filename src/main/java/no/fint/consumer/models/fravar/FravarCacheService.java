@@ -22,10 +22,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import no.fint.model.utdanning.vurdering.Fravar;
@@ -71,50 +69,36 @@ public class FravarCacheService extends CacheService<FravarResource> {
         props.getAssets().forEach(this::createCache);
     }
 
-    @Scheduled(cron = Constants.CACHE_CRON_FRAVAR)
+    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_FRAVAR, fixedRateString = Constants.CACHE_FIXEDRATE_FRAVAR)
     public void populateCacheAll() {
-        Executors.newSingleThreadExecutor()
-                .execute(() -> props.getAssets().forEach(asset -> {
-                    populateCache(asset);
-                    try {
-                        Duration duration = Duration.ofMillis(props.getEventWaitFravar());
-                        log.info("Waiting for {} minutes and {} seconds before populating cache for next asset. If this is the last asset nothing more will happen until a new schedule 🏁",
-                                duration.toMinutes(),
-                                duration.minusMinutes(duration.toMinutes()).getSeconds()
-                        );
-                        Thread.sleep(props.getEventWaitFravar());
-                    } catch (InterruptedException e) {
-                        log.warn(e.getMessage());
-                    }
-                }));
+        props.getAssets().forEach(this::populateCache);
     }
 
     public void rebuildCache(String orgId) {
-        flush(orgId);
-        populateCache(orgId);
-    }
+		flush(orgId);
+		populateCache(orgId);
+	}
 
     @Override
     public void populateCache(String orgId) {
-        log.info("Populating Fravar has been disabled due to large volumn of data and that it is obsolete ({})", orgId);
-        //	log.info("Populating Fravar cache for {}", orgId);
-        //  Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVAR, Constants.CACHE_SERVICE);
-        //  consumerEventUtil.send(event);
+		log.info("Populating Fravar cache for {}", orgId);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVAR, Constants.CACHE_SERVICE);
+        consumerEventUtil.send(event);
     }
 
 
     public Optional<FravarResource> getFravarBySystemId(String orgId, String systemId) {
         return getOne(orgId, systemId.hashCode(),
-                (resource) -> Optional
-                        .ofNullable(resource)
-                        .map(FravarResource::getSystemId)
-                        .map(Identifikator::getIdentifikatorverdi)
-                        .map(systemId::equals)
-                        .orElse(false));
+            (resource) -> Optional
+                .ofNullable(resource)
+                .map(FravarResource::getSystemId)
+                .map(Identifikator::getIdentifikatorverdi)
+                .map(systemId::equals)
+                .orElse(false));
     }
 
 
-    @Override
+	@Override
     public void onAction(Event event) {
         List<FravarResource> data;
         if (checkFintResourceCompatibility && fintResourceCompatibility.isFintResourceData(event.getData())) {
@@ -130,9 +114,9 @@ public class FravarCacheService extends CacheService<FravarResource> {
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_FRAVAR) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<FravarResource>> cacheObjects = data
-                        .stream()
-                        .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
-                        .collect(Collectors.toList());
+                    .stream()
+                    .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
+                    .collect(Collectors.toList());
                 addCache(event.getOrgId(), cacheObjects);
                 log.info("Added {} cache objects to cache for {}", cacheObjects.size(), event.getOrgId());
             } else {
