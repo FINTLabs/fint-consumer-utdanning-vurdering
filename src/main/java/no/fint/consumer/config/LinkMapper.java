@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import no.fint.model.utdanning.vurdering.Anmerkninger;
 import no.fint.model.utdanning.vurdering.Eksamensgruppe;
 import no.fint.model.utdanning.vurdering.Eksamensgruppemedlemskap;
+import no.fint.model.utdanning.vurdering.Eksamensvurdering;
 import no.fint.model.utdanning.vurdering.Elevfravar;
 import no.fint.model.utdanning.vurdering.Elevvurdering;
 import no.fint.model.utdanning.vurdering.Fravar;
@@ -29,6 +30,7 @@ public class LinkMapper {
             .put(Anmerkninger.class.getName(), contextPath + RestEndpoints.ANMERKNINGER)
             .put(Eksamensgruppe.class.getName(), contextPath + RestEndpoints.EKSAMENSGRUPPE)
             .put(Eksamensgruppemedlemskap.class.getName(), contextPath + RestEndpoints.EKSAMENSGRUPPEMEDLEMSKAP)
+            .put(Eksamensvurdering.class.getName(), contextPath + RestEndpoints.EKSAMENSVURDERING)
             .put(Elevfravar.class.getName(), contextPath + RestEndpoints.ELEVFRAVAR)
             .put(Elevvurdering.class.getName(), contextPath + RestEndpoints.ELEVVURDERING)
             .put(Fravar.class.getName(), contextPath + RestEndpoints.FRAVAR)
@@ -56,9 +58,9 @@ public class LinkMapper {
             .put("no.fint.model.felles.kodeverk.Fylke", "/felles/kodeverk/fylke")
             .put("no.fint.model.utdanning.kodeverk.Karakterstatus", "/utdanning/kodeverk/karakterstatus")
             .put("no.fint.model.utdanning.kodeverk.Betalingsstatus", "/utdanning/kodeverk/betalingsstatus")
+            .put("no.fint.model.utdanning.timeplan.Undervisningsgruppe", "/utdanning/timeplan/undervisningsgruppe")
             .put("no.fint.model.utdanning.kodeverk.Vitnemalsmerknad", "/utdanning/kodeverk/vitnemalsmerknad")
             .put("no.fint.model.utdanning.elev.Skoleressurs", "/utdanning/elev/skoleressurs")
-            .put("no.fint.model.utdanning.timeplan.Undervisningsgruppe", "/utdanning/timeplan/undervisningsgruppe")
             .put("no.fint.model.utdanning.kodeverk.Fravarstype", "/utdanning/kodeverk/fravarstype")
             .put("no.fint.model.utdanning.timeplan.Faggruppe", "/utdanning/timeplan/faggruppe")
             .put("no.fint.model.utdanning.kodeverk.Karakterskala", "/utdanning/kodeverk/karakterskala")

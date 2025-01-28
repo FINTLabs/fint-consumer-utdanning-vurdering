@@ -7,6 +7,7 @@ public enum RestEndpoints {
 	public static final String ANMERKNINGER = "/anmerkninger";
 	public static final String EKSAMENSGRUPPE = "/eksamensgruppe";
 	public static final String EKSAMENSGRUPPEMEDLEMSKAP = "/eksamensgruppemedlemskap";
+	public static final String EKSAMENSVURDERING = "/eksamensvurdering";
 	public static final String ELEVFRAVAR = "/elevfravar";
 	public static final String ELEVVURDERING = "/elevvurdering";
 	public static final String FRAVAR = "/fravar";

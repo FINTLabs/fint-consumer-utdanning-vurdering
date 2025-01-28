@@ -1,4 +1,4 @@
-package no.fint.consumer.models.fravar;
+package no.fint.consumer.models.eksamensvurdering;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,17 +26,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import no.fint.model.utdanning.vurdering.Fravar;
-import no.fint.model.resource.utdanning.vurdering.FravarResource;
+import no.fint.model.utdanning.vurdering.Eksamensvurdering;
+import no.fint.model.resource.utdanning.vurdering.EksamensvurderingResource;
 import no.fint.model.utdanning.vurdering.VurderingActions;
 import no.fint.model.felles.kompleksedatatyper.Identifikator;
 
 @Slf4j
 @Service
-@ConditionalOnProperty(name = "fint.consumer.cache.disabled.fravar", havingValue = "false", matchIfMissing = true)
-public class FravarCacheService extends CacheService<FravarResource> {
+@ConditionalOnProperty(name = "fint.consumer.cache.disabled.eksamensvurdering", havingValue = "false", matchIfMissing = true)
+public class EksamensvurderingCacheService extends CacheService<EksamensvurderingResource> {
 
-    public static final String MODEL = Fravar.class.getSimpleName().toLowerCase();
+    public static final String MODEL = Eksamensvurdering.class.getSimpleName().toLowerCase();
 
     @Value("${fint.consumer.compatibility.fintresource:true}")
     private boolean checkFintResourceCompatibility;
@@ -51,16 +51,16 @@ public class FravarCacheService extends CacheService<FravarResource> {
     private ConsumerProps props;
 
     @Autowired
-    private FravarLinker linker;
+    private EksamensvurderingLinker linker;
 
     private JavaType javaType;
 
     private ObjectMapper objectMapper;
 
-    public FravarCacheService() {
-        super(MODEL, VurderingActions.GET_ALL_FRAVAR, VurderingActions.UPDATE_FRAVAR);
+    public EksamensvurderingCacheService() {
+        super(MODEL, VurderingActions.GET_ALL_EKSAMENSVURDERING, VurderingActions.UPDATE_EKSAMENSVURDERING);
         objectMapper = new ObjectMapper();
-        javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, FravarResource.class);
+        javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, EksamensvurderingResource.class);
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
 
@@ -69,7 +69,7 @@ public class FravarCacheService extends CacheService<FravarResource> {
         props.getAssets().forEach(this::createCache);
     }
 
-    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_FRAVAR, fixedRateString = Constants.CACHE_FIXEDRATE_FRAVAR)
+    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_EKSAMENSVURDERING, fixedRateString = Constants.CACHE_FIXEDRATE_EKSAMENSVURDERING)
     public void populateCacheAll() {
         props.getAssets().forEach(this::populateCache);
     }
@@ -81,17 +81,17 @@ public class FravarCacheService extends CacheService<FravarResource> {
 
     @Override
     public void populateCache(String orgId) {
-		log.info("Populating Fravar cache for {}", orgId);
-        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVAR, Constants.CACHE_SERVICE);
+		log.info("Populating Eksamensvurdering cache for {}", orgId);
+        Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_EKSAMENSVURDERING, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);
     }
 
 
-    public Optional<FravarResource> getFravarBySystemId(String orgId, String systemId) {
+    public Optional<EksamensvurderingResource> getEksamensvurderingBySystemId(String orgId, String systemId) {
         return getOne(orgId, systemId.hashCode(),
             (resource) -> Optional
                 .ofNullable(resource)
-                .map(FravarResource::getSystemId)
+                .map(EksamensvurderingResource::getSystemId)
                 .map(Identifikator::getIdentifikatorverdi)
                 .map(systemId::equals)
                 .orElse(false));
@@ -100,10 +100,10 @@ public class FravarCacheService extends CacheService<FravarResource> {
 
 	@Override
     public void onAction(Event event) {
-        List<FravarResource> data;
+        List<EksamensvurderingResource> data;
         if (checkFintResourceCompatibility && fintResourceCompatibility.isFintResourceData(event.getData())) {
-            log.info("Compatibility: Converting FintResource<FravarResource> to FravarResource ...");
-            data = fintResourceCompatibility.convertResourceData(event.getData(), FravarResource.class);
+            log.info("Compatibility: Converting FintResource<EksamensvurderingResource> to EksamensvurderingResource ...");
+            data = fintResourceCompatibility.convertResourceData(event.getData(), EksamensvurderingResource.class);
         } else {
             data = objectMapper.convertValue(event.getData(), javaType);
         }
@@ -111,9 +111,9 @@ public class FravarCacheService extends CacheService<FravarResource> {
             linker.mapLinks(resource);
             linker.resetSelfLinks(resource);
         });
-        if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_FRAVAR) {
+        if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_EKSAMENSVURDERING) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
-                List<CacheObject<FravarResource>> cacheObjects = data
+                List<CacheObject<EksamensvurderingResource>> cacheObjects = data
                     .stream()
                     .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
                     .collect(Collectors.toList());
@@ -123,7 +123,7 @@ public class FravarCacheService extends CacheService<FravarResource> {
                 log.debug("Ignoring payload for {} with response status {}", event.getOrgId(), event.getResponseStatus());
             }
         } else {
-            List<CacheObject<FravarResource>> cacheObjects = data
+            List<CacheObject<EksamensvurderingResource>> cacheObjects = data
                     .stream()
                     .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
                     .collect(Collectors.toList());
