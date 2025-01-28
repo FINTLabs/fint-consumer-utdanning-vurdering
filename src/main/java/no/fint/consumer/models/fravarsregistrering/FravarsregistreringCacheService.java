@@ -3,9 +3,7 @@ package no.fint.consumer.models.fravarsregistrering;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import lombok.extern.slf4j.Slf4j;
-
 import no.fint.cache.CacheService;
 import no.fint.cache.model.CacheObject;
 import no.fint.consumer.config.Constants;
@@ -13,8 +11,11 @@ import no.fint.consumer.config.ConsumerProps;
 import no.fint.consumer.event.ConsumerEventUtil;
 import no.fint.event.model.Event;
 import no.fint.event.model.ResponseStatus;
+import no.fint.model.felles.kompleksedatatyper.Identifikator;
+import no.fint.model.resource.utdanning.vurdering.FravarsregistreringResource;
+import no.fint.model.utdanning.vurdering.Fravarsregistrering;
+import no.fint.model.utdanning.vurdering.VurderingActions;
 import no.fint.relations.FintResourceCompatibility;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,14 +23,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-
-import no.fint.model.utdanning.vurdering.Fravarsregistrering;
-import no.fint.model.resource.utdanning.vurdering.FravarsregistreringResource;
-import no.fint.model.utdanning.vurdering.VurderingActions;
-import no.fint.model.felles.kompleksedatatyper.Identifikator;
 
 @Slf4j
 @Service
@@ -69,19 +67,32 @@ public class FravarsregistreringCacheService extends CacheService<Fravarsregistr
         props.getAssets().forEach(this::createCache);
     }
 
-    @Scheduled(initialDelayString = Constants.CACHE_INITIALDELAY_FRAVARSREGISTRERING, fixedRateString = Constants.CACHE_FIXEDRATE_FRAVARSREGISTRERING)
+    @Scheduled(cron = Constants.CACHE_CRON_FRAVARSREGISTRERING)
     public void populateCacheAll() {
-        props.getAssets().forEach(this::populateCache);
+        Executors.newSingleThreadExecutor()
+                .execute(() -> props.getAssets().forEach(asset -> {
+                    populateCache(asset);
+                    try {
+                        Duration duration = Duration.ofMillis(props.getEventWaitFravarsregistrering());
+                        log.info("Waiting for {} minutes and {} seconds before populating cache for next asset. If this is the last asset nothing more will happen until a new schedule 🏁",
+                                duration.toMinutes(),
+                                duration.minusMinutes(duration.toMinutes()).getSeconds()
+                        );
+                        Thread.sleep(props.getEventWaitFravarsregistrering());
+                    } catch (InterruptedException e) {
+                        log.warn(e.getMessage());
+                    }
+                }));
     }
 
     public void rebuildCache(String orgId) {
-		flush(orgId);
-		populateCache(orgId);
-	}
+        flush(orgId);
+        populateCache(orgId);
+    }
 
     @Override
     public void populateCache(String orgId) {
-		log.info("Populating Fravarsregistrering cache for {}", orgId);
+        log.info("Populating Fravarsregistrering cache for {}", orgId);
         Event event = new Event(orgId, Constants.COMPONENT, VurderingActions.GET_ALL_FRAVARSREGISTRERING, Constants.CACHE_SERVICE);
         consumerEventUtil.send(event);
     }
@@ -89,16 +100,16 @@ public class FravarsregistreringCacheService extends CacheService<Fravarsregistr
 
     public Optional<FravarsregistreringResource> getFravarsregistreringBySystemId(String orgId, String systemId) {
         return getOne(orgId, systemId.hashCode(),
-            (resource) -> Optional
-                .ofNullable(resource)
-                .map(FravarsregistreringResource::getSystemId)
-                .map(Identifikator::getIdentifikatorverdi)
-                .map(systemId::equals)
-                .orElse(false));
+                (resource) -> Optional
+                        .ofNullable(resource)
+                        .map(FravarsregistreringResource::getSystemId)
+                        .map(Identifikator::getIdentifikatorverdi)
+                        .map(systemId::equals)
+                        .orElse(false));
     }
 
 
-	@Override
+    @Override
     public void onAction(Event event) {
         List<FravarsregistreringResource> data;
         if (checkFintResourceCompatibility && fintResourceCompatibility.isFintResourceData(event.getData())) {
@@ -114,9 +125,9 @@ public class FravarsregistreringCacheService extends CacheService<Fravarsregistr
         if (VurderingActions.valueOf(event.getAction()) == VurderingActions.UPDATE_FRAVARSREGISTRERING) {
             if (event.getResponseStatus() == ResponseStatus.ACCEPTED || event.getResponseStatus() == ResponseStatus.CONFLICT) {
                 List<CacheObject<FravarsregistreringResource>> cacheObjects = data
-                    .stream()
-                    .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
-                    .collect(Collectors.toList());
+                        .stream()
+                        .map(i -> new CacheObject<>(i, linker.hashCodes(i)))
+                        .collect(Collectors.toList());
                 addCache(event.getOrgId(), cacheObjects);
                 log.info("Added {} cache objects to cache for {}", cacheObjects.size(), event.getOrgId());
             } else {
