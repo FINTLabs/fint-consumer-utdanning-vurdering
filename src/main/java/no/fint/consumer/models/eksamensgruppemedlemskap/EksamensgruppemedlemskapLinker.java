@@ -1,7 +1,7 @@
 package no.fint.consumer.models.eksamensgruppemedlemskap;
 
-import no.fint.model.resource.utdanning.vurdering.EksamensgruppemedlemskapResource;
-import no.fint.model.resource.utdanning.vurdering.EksamensgruppemedlemskapResources;
+import no.novari.fint.model.resource.utdanning.vurdering.EksamensgruppemedlemskapResource;
+import no.novari.fint.model.resource.utdanning.vurdering.EksamensgruppemedlemskapResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

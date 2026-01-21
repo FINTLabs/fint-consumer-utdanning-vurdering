@@ -1,7 +1,7 @@
 package no.fint.consumer.models.halvarsfagvurdering;
 
-import no.fint.model.resource.utdanning.vurdering.HalvarsfagvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.HalvarsfagvurderingResources;
+import no.novari.fint.model.resource.utdanning.vurdering.HalvarsfagvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.HalvarsfagvurderingResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

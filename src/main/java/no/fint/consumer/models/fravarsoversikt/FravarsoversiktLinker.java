@@ -1,7 +1,7 @@
 package no.fint.consumer.models.fravarsoversikt;
 
-import no.fint.model.resource.utdanning.vurdering.FravarsoversiktResource;
-import no.fint.model.resource.utdanning.vurdering.FravarsoversiktResources;
+import no.novari.fint.model.resource.utdanning.vurdering.FravarsoversiktResource;
+import no.novari.fint.model.resource.utdanning.vurdering.FravarsoversiktResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

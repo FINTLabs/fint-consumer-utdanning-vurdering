@@ -1,7 +1,7 @@
 package no.fint.consumer.models.elevfravar;
 
-import no.fint.model.resource.utdanning.vurdering.ElevfravarResource;
-import no.fint.model.resource.utdanning.vurdering.ElevfravarResources;
+import no.novari.fint.model.resource.utdanning.vurdering.ElevfravarResource;
+import no.novari.fint.model.resource.utdanning.vurdering.ElevfravarResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package no.fint.consumer.models.anmerkninger;
 
-import no.fint.model.resource.utdanning.vurdering.AnmerkningerResource;
-import no.fint.model.resource.utdanning.vurdering.AnmerkningerResources;
+import no.novari.fint.model.resource.utdanning.vurdering.AnmerkningerResource;
+import no.novari.fint.model.resource.utdanning.vurdering.AnmerkningerResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

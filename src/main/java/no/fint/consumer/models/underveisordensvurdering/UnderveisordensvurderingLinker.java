@@ -1,7 +1,7 @@
 package no.fint.consumer.models.underveisordensvurdering;
 
-import no.fint.model.resource.utdanning.vurdering.UnderveisordensvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.UnderveisordensvurderingResources;
+import no.novari.fint.model.resource.utdanning.vurdering.UnderveisordensvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.UnderveisordensvurderingResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

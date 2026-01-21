@@ -1,7 +1,7 @@
 package no.fint.consumer.models.karakterverdi;
 
-import no.fint.model.resource.utdanning.vurdering.KarakterverdiResource;
-import no.fint.model.resource.utdanning.vurdering.KarakterverdiResources;
+import no.novari.fint.model.resource.utdanning.vurdering.KarakterverdiResource;
+import no.novari.fint.model.resource.utdanning.vurdering.KarakterverdiResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

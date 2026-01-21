@@ -1,7 +1,7 @@
 package no.fint.consumer.models.sensor;
 
-import no.fint.model.resource.utdanning.vurdering.SensorResource;
-import no.fint.model.resource.utdanning.vurdering.SensorResources;
+import no.novari.fint.model.resource.utdanning.vurdering.SensorResource;
+import no.novari.fint.model.resource.utdanning.vurdering.SensorResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

@@ -43,9 +43,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import no.fint.model.resource.utdanning.vurdering.HalvarsordensvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.HalvarsordensvurderingResources;
-import no.fint.model.utdanning.vurdering.VurderingActions;
+import no.novari.fint.model.resource.utdanning.vurdering.HalvarsordensvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.HalvarsordensvurderingResources;
+import no.novari.fint.model.utdanning.vurdering.VurderingActions;
 
 @Slf4j
 @Api(tags = {"Halvarsordensvurdering"})
