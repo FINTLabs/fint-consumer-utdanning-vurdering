@@ -1,7 +1,7 @@
 package no.fint.consumer.models.sluttordensvurdering;
 
-import no.fint.model.resource.utdanning.vurdering.SluttordensvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.SluttordensvurderingResources;
+import no.novari.fint.model.resource.utdanning.vurdering.SluttordensvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.SluttordensvurderingResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

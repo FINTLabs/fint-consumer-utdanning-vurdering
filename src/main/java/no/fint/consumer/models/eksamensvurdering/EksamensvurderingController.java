@@ -43,9 +43,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import no.fint.model.resource.utdanning.vurdering.EksamensvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.EksamensvurderingResources;
-import no.fint.model.utdanning.vurdering.VurderingActions;
+import no.novari.fint.model.resource.utdanning.vurdering.EksamensvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.EksamensvurderingResources;
+import no.novari.fint.model.utdanning.vurdering.VurderingActions;
 
 @Slf4j
 @Api(tags = {"Eksamensvurdering"})

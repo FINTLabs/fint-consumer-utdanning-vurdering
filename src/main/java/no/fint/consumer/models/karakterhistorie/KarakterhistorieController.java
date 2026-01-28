@@ -43,9 +43,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-import no.fint.model.resource.utdanning.vurdering.KarakterhistorieResource;
-import no.fint.model.resource.utdanning.vurdering.KarakterhistorieResources;
-import no.fint.model.utdanning.vurdering.VurderingActions;
+import no.novari.fint.model.resource.utdanning.vurdering.KarakterhistorieResource;
+import no.novari.fint.model.resource.utdanning.vurdering.KarakterhistorieResources;
+import no.novari.fint.model.utdanning.vurdering.VurderingActions;
 
 @Slf4j
 @Api(tags = {"Karakterhistorie"})

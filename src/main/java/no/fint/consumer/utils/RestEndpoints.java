@@ -10,7 +10,6 @@ public enum RestEndpoints {
 	public static final String EKSAMENSVURDERING = "/eksamensvurdering";
 	public static final String ELEVFRAVAR = "/elevfravar";
 	public static final String ELEVVURDERING = "/elevvurdering";
-	public static final String FRAVAR = "/fravar";
 	public static final String FRAVARSOVERSIKT = "/fravarsoversikt";
 	public static final String FRAVARSREGISTRERING = "/fravarsregistrering";
 	public static final String HALVARSFAGVURDERING = "/halvarsfagvurdering";
@@ -22,6 +21,5 @@ public enum RestEndpoints {
 	public static final String SLUTTORDENSVURDERING = "/sluttordensvurdering";
 	public static final String UNDERVEISFAGVURDERING = "/underveisfagvurdering";
 	public static final String UNDERVEISORDENSVURDERING = "/underveisordensvurdering";
-	public static final String VURDERING = "/vurdering";
 
 }

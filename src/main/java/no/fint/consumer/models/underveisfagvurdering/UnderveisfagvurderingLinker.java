@@ -1,7 +1,7 @@
 package no.fint.consumer.models.underveisfagvurdering;
 
-import no.fint.model.resource.utdanning.vurdering.UnderveisfagvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.UnderveisfagvurderingResources;
+import no.novari.fint.model.resource.utdanning.vurdering.UnderveisfagvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.UnderveisfagvurderingResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 

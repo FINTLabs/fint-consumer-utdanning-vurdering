@@ -1,7 +1,7 @@
 package no.fint.consumer.models.eksamensvurdering;
 
-import no.fint.model.resource.utdanning.vurdering.EksamensvurderingResource;
-import no.fint.model.resource.utdanning.vurdering.EksamensvurderingResources;
+import no.novari.fint.model.resource.utdanning.vurdering.EksamensvurderingResource;
+import no.novari.fint.model.resource.utdanning.vurdering.EksamensvurderingResources;
 import no.fint.relations.FintLinker;
 import org.springframework.stereotype.Component;
 
